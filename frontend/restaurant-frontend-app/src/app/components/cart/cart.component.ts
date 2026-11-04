@@ -10,9 +10,12 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { formatDate } from '@angular/common';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 import { Order } from '@app/models/orders/order.model';
 import { PreOrdersService } from '@app/services/pre-orders/pre-orders.service';
+import { ReservationService } from '@app/services/reservation/reservation.service';
 
 import { CancelOrderModalComponent } from './components/cancel-order-modal/cancel-order-modal.component';
 import { NotSubmittedOrderComponent } from './components/not-submitted-order/not-submitted-order.component';
@@ -37,6 +40,7 @@ export class CartComponent implements OnInit {
     inject(PreOrdersService);
 
   private readonly router = inject(Router);
+  private readonly reservationsService = inject(ReservationService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly closeCartEvent = output<void>();
@@ -279,7 +283,26 @@ export class CartComponent implements OnInit {
   private loadOrders(): void {
     this.preOrdersService
       .getPreOrders()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        switchMap((orders) => orders.length === 0 ? of(orders) :
+          this.reservationsService.getReservationsForUser$().pipe(
+            catchError(() => of([])),
+            map((reservations) => orders.map((order) => {
+              const reservation = reservations.find((item) => item.id === order.reservationId);
+              if (!reservation || !Number.isFinite(new Date(reservation.startTime).getTime()) ||
+                !Number.isFinite(new Date(reservation.endTime).getTime())) {
+                return order;
+              }
+              // Use the reservation's actual dates in browser local time, as its card does.
+              // The legacy order label is a timezone-less string formatted by the server.
+              return {
+                ...order,
+                reservationTime: `${formatDate(reservation.startTime, 'MMM d, y, h:mm a', 'en-US')} - ${formatDate(reservation.endTime, 'h:mm a', 'en-US')}`,
+              };
+            })),
+          )),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
         next: (orders) => {
           this.orders.set(orders);

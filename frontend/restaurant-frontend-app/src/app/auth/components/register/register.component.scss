@@ -2,7 +2,9 @@
 
 :host {
   display: block;
-  width: 86.25rem;
+  width: 100%;
+  max-width: 86.25rem;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 1rem;
 
@@ -26,17 +28,20 @@
 }
 
 .register-form {
-  padding: 6px 84px;
+  padding: 6px clamp(1rem, 5vw, 84px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 31rem;
+  width: 50%;
+  min-width: 0;
+  flex: 1 1 0;
+  box-sizing: border-box;
   max-height: 100%;
   gap: 1.5rem;
 
   @media (max-width: 540px) {
-    width: auto;
+    width: 100%;
     padding: 1rem;
     max-width: 100%;
   }
@@ -107,6 +112,8 @@ label {
 }
 
 input {
+  box-sizing: border-box;
+  min-width: 0;
   height: 3.5rem;
   border-radius: 1rem;
   border: 2px solid color.$neutral-200;
@@ -154,6 +161,13 @@ input {
 .password {
   width: 100%;
   margin-top: 1.5rem;
+}
+
+// Keep nested password guidance inside this form, including its bullet padding.
+:host ::ng-deep .register-form .requirement-item {
+  box-sizing: border-box;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .error-message {
