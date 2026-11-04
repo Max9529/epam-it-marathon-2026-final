@@ -42,7 +42,7 @@ public class AccountRecoveryHandler(AmazonCognitoIdentityProviderClient cognito)
                     await cognito.ForgotPasswordAsync(new ForgotPasswordRequest { ClientId = ResourceNames.ClientId, Username = body.Email.Trim() });
                     return RecoveryNotice();
                 case "/password-recovery/confirm":
-                    if (body.Password.Length < 8 || body.Password.Length > 16 || string.IsNullOrWhiteSpace(body.Code))
+                    if (string.IsNullOrEmpty(body.Password) || body.Password.Length < 8 || body.Password.Length > 16 || string.IsNullOrWhiteSpace(body.Code))
                         return ResponseBuilder.CreateErrorResponse(400, "Enter the email code and a password of 8–16 characters.", context.Logger);
                     await cognito.ConfirmForgotPasswordAsync(new ConfirmForgotPasswordRequest
                     { ClientId = ResourceNames.ClientId, Username = body.Email.Trim(), ConfirmationCode = body.Code.Trim(), Password = body.Password });
