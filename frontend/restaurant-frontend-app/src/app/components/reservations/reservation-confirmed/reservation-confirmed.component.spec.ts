@@ -1,0 +1,28 @@
+import { API_BASE_URL } from '@app/shared/config/api-base-url.token';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ReservationConfirmedComponent } from './reservation-confirmed.component';
+
+describe('ReservationConfirmedComponent', () => {
+  let component: ReservationConfirmedComponent;
+  let fixture: ComponentFixture<ReservationConfirmedComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting(), { provide: API_BASE_URL, useValue: 'https://test.api' }],
+      imports: [ReservationConfirmedComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ReservationConfirmedComponent);
+    component = fixture.componentInstance;
+    fixture.componentRef.setInput('reservation', { id: 'demo', tableId: 'demo-table', tableCapacity: 4, restaurantName: 'Demo restaurant', locationAddress: 'Demo restaurant', startTime: '2026-11-07T13:00:00Z', endTime: '2026-11-07T14:30:00Z', guestCount: 2, status: 0, waiterId: 'demo-waiter', customerId: 'demo-customer' });
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

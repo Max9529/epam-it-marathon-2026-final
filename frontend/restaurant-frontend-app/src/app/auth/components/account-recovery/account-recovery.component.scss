@@ -1,0 +1,13 @@
+:host { display: block; min-height: 75vh; padding: 2rem 1rem; background: #f7f7ec; }
+.recovery-card { max-width: 32rem; margin: 2rem auto; padding: 2rem; border-radius: 1.5rem; background: white; box-shadow: 0 4px 24px #103c1f12; }
+h1 { font-size: 1.75rem; margin: 1.5rem 0 1rem; }
+p { line-height: 1.6; }
+form { display: grid; gap: 1rem; margin: 1.5rem 0; }
+label { display: grid; gap: .5rem; font-weight: 500; }
+input { width: 100%; box-sizing: border-box; padding: .8rem; border: 1px solid #87968a; border-radius: .5rem; font: inherit; }
+a { color: #126d35; }
+.notice { background: #eaf4e8; padding: 1rem; border-radius: .5rem; }
+.error { color: #a02222; }
+.hint { font-size: .8rem; margin: 0; }
+button:disabled { cursor: not-allowed; opacity: .6; }
+@media (max-width: 540px) { .recovery-card { padding: 1.25rem; margin: 0; } }

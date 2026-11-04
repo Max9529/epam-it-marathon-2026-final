@@ -1,0 +1,4 @@
+account_id: YOUR_AWS_ACCOUNT_ID
+region: eu-north-1
+project_path: /absolute/path/to/backend/restaurant-backend-app
+deploy_target_bucket: YOUR_PRIVATE_ARTIFACTS_BUCKET
