@@ -17,6 +17,8 @@
 
   @media (max-width: 768px) {
     min-height: auto;
+    flex-direction: column;
+    gap: 0;
   }
 }
 
@@ -57,7 +59,9 @@
   background: linear-gradient(180deg, color.$neutral-0 0%,color.$bg-yellow 100%);
 
   @media (max-width: 768px) {
+    position: static;
     width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -115,6 +119,9 @@
 
 .reviews-section {
   margin: 0 2.5rem;
+  @media (max-width: 768px) {
+    margin: 0 1rem;
+  }
 }
 
 .reviews-section h2 {
